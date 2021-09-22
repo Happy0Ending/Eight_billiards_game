@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/PEP/pep.min.js"></script>
+    <script src="js/4.2/dist/cannon.js"></script>
+    <script src="js/4.2/dist/earcut.min.js"></script>
+    <script src="js/4.2/dist/libktx.js"></script>
+    <script src="js/4.2/dist/split.js"></script>
+    <script src="js/4.2/dist/cannon.js"></script>
+    <script src="js/4.2/dist/hls.min.js"></script>
+    <script src="js/4.2/babylon.js"></script>
+    <script src="js/4.2/babylon.gui.min.js"></script>
+    <script src="js/4.2/babylonjs.materials.min.js"></script>
+    <script src="js/4.2/babylonjs.proceduralTextures.min.js"></script>
+    <script src="js/4.2/babylonjs.loaders.min.js"></script>
+    <script src="js/4.2/babylonjs.postProcess.min.js"></script>
+    <script src="js/4.2/babylonjs.serializers.min.js"></script>
+    <script src="js/4.2/babylon.inspector.bundle.js"></script>
+    <script src="./JS/table6.js"></script>
+    <link rel="shortcut icon" href="./Img/飞机灰(Airplane Grey)_爱给网_aigei_com.png" type="image/x-icon">
+</head>
+</head>
+<style>
+    html,
+    body {
+        pad: 0;
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden
+    }
+
+    #myCanvas {
+        pad: 0;
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+        cursor: url("./Img/1024.cur"), auto;
+    }
+
+    #return {
+        width: 100px;
+        height: 50px;
+        top: 100px;
+        position: absolute;
+        font-size: 20px;
+    }
+
+    #click {
+        position: absolute;
+        width: 100px;
+        height: 50px;
+        top: 100px;
+        left: 20px;
+    }
+
+    #scoreNumber {
+        position: absolute;
+        top: 100px;
+        right: 60px;
+        width: 100px;
+        height: 20px;
+
+    }
+
+    #rotateDiv {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        top: 400px;
+        right: 80px;
+        background-color: aqua;
+        border-radius: 50%;
+    }
+
+    #rotateDiv div {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 100px;
+        left: 100px;
+        background-color: brown;
+
+    }
+</style>
+
+<body>
+    <center><input type="button" id="return" value="return"></center>
+    <canvas id="myCanvas">
+        如果打不开请更换浏览器
+    </canvas>
+    <script>
+        createWorld();
+    </script>
+    <button id="click">click</button>
+    <div id="scoreNumber">0</div>
+    <div id="rotateDiv">
+        <div id="pos">
+        </div>
+    </div>
+    <div class="mobileview">
+        <h6 class="bikeanimsubheader mobileviewsubheader">Animations</h6>
+        <!-- <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Middle Stand.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Side Stand.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Right handle ctrl.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Left handle ctrl.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Seat Up &amp; Down.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Right bend body.svg"></div>
+        <div class="iconcardimg"><img class="vespa2danimbtn" src="assets/bikedemo/Left bend body.svg"></div> -->
+    </div>
+</body>
+
+
+</html>
