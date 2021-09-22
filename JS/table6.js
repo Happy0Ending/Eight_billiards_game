@@ -530,7 +530,7 @@ function createWorld() {
         kDirection = (timeAll * 0.004 * Math.sin(Fdirection) ** 2 + timeAll * 0.004 * Math.cos(Fdirection) ** 2) ** 0.5;
         sphere.physicsImpostor.setLinearVelocity(forceDirection);
 
-        scene.onBeforeRenderObservable.add(function () {
+        scene.onAfterRenderObservable.add(function () {
           //console.log(sphere.position.z / sphere.position.x);
           sphere.physicsImpostor.physicsBody.linearDamping = 0.35;
           for (let i = 0; i < spheres.length; i++) {
