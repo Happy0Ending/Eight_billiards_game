@@ -172,6 +172,13 @@ function createWorld() {
 
     let ballImpostor = createBalls(sphere, ballsImpostors, spheres, scene);
 
+    for (let i = 0; i < 15; i++) {
+      ballImpostor[i].registerOnPhysicsCollide([a.physicsImpostor, b.physicsImpostor], (a, b) => {
+        ballImpostor[i].setLinearVelocity(new BABYLON.Vector3.Zero());
+      })
+    }
+    /*  b.physicsImpostor.registerOnPhysicsCollide(ballImpostor, (sIm, bIm) => {
+     }) */
     sphere.physicsImpostor.segments = 512;
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(
       ground,
@@ -394,7 +401,15 @@ function createWorld() {
           new BABYLON.Quaternion(0, 0, 0, 0)
         );
       });
-      let scoreNumber = document.getElementById("scoreNumber");
+      scoreNumber = document.getElementById("scoreNumber");
+      let returnHit = document.getElementById("returnHit");
+
+      returnHit.onclick = () => {
+        hitPointX = 0;
+        hitPointY = 0;
+        pos.style.top = 100 + "px";
+        pos.style.left = 100 + "px"
+      }
     };
     let temp = score;
     let spheresImpostor = [];
@@ -565,7 +580,7 @@ function createWorld() {
     }
     sphere.physicsImpostor.registerOnPhysicsCollide(ballImpostor, (white, target) => {
       let collV = white.getLinearVelocity();
-      kDirection = (collV.x**2+collV.z**2)**0.5;
+      kDirection = (collV.x ** 2 + collV.z ** 2) ** 0.5;
       //let lv = white.getLinearVelocity();
       if (iscoll == 0) {
         iscoll = 1;
@@ -580,47 +595,10 @@ function createWorld() {
           //white.setLinearVelocity(lDirection2.scale(10));
         }
         if (hitPointX != 0 || hitPointY != 0) {
-          console.log(FV3);
-          console.log(cone.forward);
-          wV4 = new BABYLON.Vector3(FV3.x, FV3.y, FV3.z).scale(kDirection * hitPointY / 100).add(lDirection2.scale(kDirection * -hitPointX / 100));
-          /*  if (cx <= sx && cz <= sz) {
-             wV4 = new BABYLON.Vector3(
-               10 * 0.01 * hitPointY * Math.cos(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection),
-               0,
-               -10 * 0.01 * hitPointY * Math.sin(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection)
-             );
-           }
-           if (cx >= sx && cz <= sz) {
-             wV4 = new BABYLON.Vector3(
-               10 * 0.01 * hitPointY * Math.cos(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection),
-               0,
-               -10 * 0.01 * hitPointY * Math.sin(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection)
-             );
-           }
-           if (cx < sx && cz > sz) {
-             wV4 = new BABYLON.Vector3(
-               10 * 0.01 * hitPointY * Math.cos(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection),
-               0,
-               -10 * 0.01 * hitPointY * Math.sin(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection)
-             );
-           }
-           if (cx > sx && cz > sz) {
-             wV4 = new BABYLON.Vector3(
-               10 * 0.01 * hitPointY * Math.cos(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection),
-               0,
-               -10 * 0.01 * hitPointY * Math.sin(Fdirection) +
-               -10 * 0.01 * hitPointX * Math.sin(Fdirection)
-             );
-           } */
+          wV4 = new BABYLON.Vector3(FV3.x, FV3.y, FV3.z).scale(kDirection * 
+            hitPointY / 100).add(lDirection2.scale(kDirection * -hitPointX / 100));
           target.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
-          target.setLinearVelocity(lDirection1.scale(20));
+          target.setLinearVelocity(lDirection1.scale(kDirection));
           white.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
           white.setLinearVelocity(wV4);
         }
