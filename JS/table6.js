@@ -269,17 +269,10 @@ function createWorld() {
       scene
     );
 
-    let coneThird = new BABYLON.MeshBuilder.CreateCylinder(
-      "cone",
-      { diameter: sphereDiameter, height: 16 },
-      scene
-    );
-    coneThird.isVisible = false;
+
     let coneSecondMat = new BABYLON.StandardMaterial();
     coneSecondMat.alpha = 0.6;
-    coneThird.material = coneSecondMat;
-    coneThird.rotation.x = Math.PI / 2;
-    coneThird.isPickable = false;
+
     const boxLeft = new BABYLON.MeshBuilder.CreateBox(
       "boxLeft",
       { width: 1, depth: 3, height: 0.4 },
@@ -364,18 +357,26 @@ function createWorld() {
     let timeAll = 0;
     let Fdirection;
     let FV3;
-
+    let myPoint11 = [
+      new BABYLON.Vector3(0, 0, -0),
+      new BABYLON.Vector3(0, 0, 0.01)
+    ];
+    let myPoint22 = [
+      new BABYLON.Vector3(0, 0, -0),
+      new BABYLON.Vector3(0, 0, 0.01)
+    ];
+    let myPoint33 = [
+      new BABYLON.Vector3(0, 0, -0),
+      new BABYLON.Vector3(0, 0, 0.01)
+    ];
+    let pathline1 = new BABYLON.MeshBuilder.CreateLines("path1", { points: myPoint11, updatable: true, scene });
+    pathline1.isVisible = false;
+    let pathline2 = new BABYLON.MeshBuilder.CreateLines("path1", { points: myPoint22, updatable: true, scene });
+    pathline2.isVisible = false;
+    let pathline3 = new BABYLON.MeshBuilder.CreateLines("path1", { points: myPoint33, updatable: true, scene });
     let spheresNumber = 0;
     let myPoints = [];
-    let path1 = new BABYLON.MeshBuilder.CreateCylinder(
-      "cone",
-      { diameter: sphereDiameter, height: 16 },
-      scene
-    );
-    path1.material = coneSecondMat;
-    path1.rotation.x = Math.PI / 2;
-    path1.isPickable = false;
-    path1.position.y = 0;
+
     //-----------------------------------------------------------------
     window.onload = function () {
       const rotateDiv = document.getElementById("rotateDiv");
@@ -466,47 +467,6 @@ function createWorld() {
       lDirection1 = new BABYLON.Vector3.Normalize(lineGo.direction);
       lDirection2 = new BABYLON.Vector3.Normalize(lineC.direction);
       timeDown = Date.now();
-      /* Fdirection = cone.rotation.y;
-            directionF = -Fdirection; */
-      let hit4 = RayCast(sBox, scene);
-      let hitPoint = hit4.pickedPoint;
-      {
-        if (hit4.pickedMesh == boxTop) {
-          if (result.pickedPoint.x < sphere.position.x) {
-            coneThird.position.x = hitPoint.x - 0.1 * Math.tan(Fdirection);
-            coneThird.position.z = hitPoint.z - 0.1;
-          } else {
-            coneThird.position.x = hitPoint.x + 0.1 * Math.tan(Fdirection);
-            coneThird.position.z = hitPoint.z - 0.1;
-          }
-        }
-        if (hit4.pickedMesh == boxBottom) {
-          coneThird.position.x = hitPoint.x + 0.1 * Math.tan(Fdirection);
-          coneThird.position.z = hitPoint.z + 0.1;
-        }
-        if (hit4.pickedMesh == boxRight || hit4.pickedMesh == boxRight1) {
-          if (result.pickedPoint.y > sphere.position.y) {
-            coneThird.position.x = hitPoint.x + 0.1;
-            coneThird.position.z =
-              hitPoint.z - 0.1 * Math.tan(Math.PI / 2 - Math.abs(Fdirection));
-          } else {
-            coneThird.position.x = hitPoint.x + 0.1;
-            coneThird.position.z =
-              hitPoint.z + 0.1 * Math.tan(Math.PI / 2 - Math.abs(Fdirection));
-          }
-        }
-        if (hit4.pickedMesh == boxLeft || hit4.pickedMesh == boxLeft1) {
-          if (result.pickedPoint.y > sphere.position.y) {
-            coneThird.position.x = hitPoint.x - 0.1;
-            coneThird.position.z =
-              hitPoint.z - 0.1 * Math.tan(Math.PI / 2 - Math.abs(Fdirection));
-          } else {
-            coneThird.position.x = hitPoint.x - 0.1;
-            coneThird.position.z =
-              hitPoint.z + 0.1 * Math.tan(Math.PI / 2 - Math.abs(Fdirection));
-          }
-        }
-      }
       //单独反射线
       scene.onPointerUp = function () {
         let result = scene.pick(scene.pointerX, scene.pointerY);
@@ -516,9 +476,9 @@ function createWorld() {
         Fdirection = cone.rotation.y;
         directionF = -Fdirection;
 
-        path1.isVisible = false;
+
         setTimeout(() => {
-          path1.isVisible = true;
+
         }, 5000);
         // sphere.physicsImpostor.mass = 0.145;
         setTimeout(() => {
@@ -533,7 +493,7 @@ function createWorld() {
             ? timeUp - timeDown
             : timeUp - timeDown > 3000
               ? 4500
-              : 3000;
+              : 1500;
         if (hitPointX != 0 || hitPointY) {
           timeAll = 2500;
         }
@@ -554,27 +514,12 @@ function createWorld() {
           if (hitPointX != 0 || hitPointY != 0) {
             sphere.physicsImpostor.friction = 0.1;
           }
-          coneThird.rotation.y = directionF;
-          sphere.physicsImpostor.physicsBody.linearDamping = 0.8;
+
+          //sphere.physicsImpostor.physicsBody.linearDamping = 0.8;
         });
       };
     };
     let wV4 = new BABYLON.Vector3(0, 0, 0, 0);
-    let cx = cone.position.x;
-    let cz = cone.position.z;
-    let sx = sphere.position.x;
-    let sz = sphere.position.z;
-    // let sphereStart = new BABYLON.MeshBuilder.CreateSphere("sphereStart",{diameter:0.3})
-    // sphereStart.position = new BABYLON.Vector3(
-    //   0,
-    //   0,
-    //   1.9
-    // )
-    const cylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", { diameter: 1.7, tessellation: 3 });
-    cylinder.isPickable = false;
-    cylinder.isVisible = false;
-    cylinder.rotation.y = -Math.PI / 6
-    cylinder.position = new BABYLON.Vector3(0, 0, 2.5);
     for (let balla of ballImpostor) {
       balla.sleep();
     }
@@ -585,17 +530,19 @@ function createWorld() {
       if (iscoll == 0) {
         iscoll = 1;
         if (hitPointX == 0 && hitPointY == 0) {
-          console.log(kDirection)
+          let wv = white.getLinearVelocity();
+          let tha = (wv.x * lDirection1.x + wv.z * lDirection1.z) / ((wv.x ** 2 + wv.z ** 2) * (lDirection1.x ** 2 + lDirection1.z ** 2)) ** .5;
+          let thb = Math.acos(tha);
+          // console.log(kDirection)
           target.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
           //target.setLinearVelocity(lDirection1.scale(20));
           target.setLinearVelocity(lDirection1.scale(kDirection));
-          //white.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
+          //white.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
           white.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
-          white.setLinearVelocity(lDirection2.scale(kDirection));
-          //white.setLinearVelocity(lDirection2.scale(10));
+          white.setLinearVelocity(lDirection2.scale(kDirection * Math.tan(thb)));
         }
         if (hitPointX != 0 || hitPointY != 0) {
-          wV4 = new BABYLON.Vector3(FV3.x, FV3.y, FV3.z).scale(kDirection * 
+          wV4 = new BABYLON.Vector3(FV3.x, FV3.y, FV3.z).scale(kDirection *
             hitPointY / 100).add(lDirection2.scale(kDirection * -hitPointX / 100));
           target.setLinearVelocity(new BABYLON.Vector3(0, 0, 0));
           target.setLinearVelocity(lDirection1.scale(kDirection));
@@ -615,10 +562,6 @@ function createWorld() {
     sBox.isPickable = false;
     sBox.isVisible = false;
     scene.onBeforeRenderObservable.add(() => {
-      if (sphere.position.x != 0) {
-        //console.log(sphere.absolutePosition.z/sphere.absolutePosition.x)
-        //console.log(sphere.physicsImpostor.getLinearVelocity().z/sphere.physicsImpostor.getLinearVelocity().x)
-      }
       // ==============================场景跟随属性=====================================
       {
         sBox.position.x = sphere.position.x;
@@ -631,7 +574,6 @@ function createWorld() {
         cone.position.x = sphere.position.x - 1.5 * Math.sin(angle);
         cone.position.z = sphere.position.z - 1.5 * Math.cos(angle);
         cone.position.y = sphere.position.y;
-        coneThird.position.y = sphere.position.y;
         cone.rotation.y = angle;
         sBox.rotation.y = angle;
         (myPoints[0] = new BABYLON.Vector3(
@@ -664,6 +606,8 @@ function createWorld() {
           Math.sqrt(k * k + 1);
         if (Math.abs(d) <= sphereDiameter) {
           whiteSp.isVisible = true;
+          pathline1.isVisible = true;
+          pathline2.isVisible = true;
           whiteSp.isPickable = false;
           if (
             result.pickedPoint.x > sphere.position.x &&
@@ -853,16 +797,9 @@ function createWorld() {
             }
           }
         }
-        path1.position.x = sWhitePos.position.x;
-        path1.position.y = sWhitePos.position.y;
-        path1.position.z = sWhitePos.position.z;
-        path1.rotation.y = Math.atan2(
-          sWhitePos.position.x - whiteSp.position.x,
-          sWhitePos.position.z - whiteSp.position.z
-        );
-        path1.isVisible = false;
         //---------------------------------------------------------lineGo--------------------------------
-        lineGo = lineGoto(whiteSp, sWhitePos, scene, tableLeft);
+        lineGo = lineGoto(whiteSp, sWhitePos, scene, tableLeft, myPoint11);
+        pathline1 = BABYLON.MeshBuilder.CreateLines('line1', { points: myPoint11, updatable: true, instance: pathline1 }, scene);
         if (scene.multiPickWithRay(lineGo)) {
           let hit = scene.multiPickWithRay(lineGo);
           for (let i = 0; i < hit.length; i++) {
@@ -870,24 +807,32 @@ function createWorld() {
               if (hit.length < 3) {
                 linet = linetwice(whiteSp, sWhitePos, hit[i].pickedPoint);
                 lineGoDispose(linet, scene, whiteSp);
-              }
-              //lineGoDispose(linet, scene, whiteSp);
+              } 
             }
             if (hit[i].pickedMesh == tableEdgeShorter1 || hit[i].pickedMesh == tableEdgeShorter2) {
               if (hit.length < 3) {
                 linet = lineTop(whiteSp, sWhitePos, hit[i].pickedPoint);
                 lineGoDispose(linet, scene, whiteSp);
               }
-              //lineGoDispose(linet, scene, whiteSp);
             }
           }
         }
-        lineGoDispose(lineGo, scene, whiteSp);
+        //lineGoDispose(lineGo, scene, whiteSp);
         //lineC = lineCome(whiteSp, sWhitePos);
-        lineC = lineComes(whiteSp, sWhitePos, sphere);
-        lineGoDispose(lineC, scene, whiteSp);
+        lineC = lineComes(whiteSp, sWhitePos, sphere, pathline2, myPoint22);
+        //lineGoDispose(lineC, scene, whiteSp);
       } else {
         whiteSp.isVisible = false;
+        myPoint11 = [
+          new BABYLON.Vector3(0, 0, 0),
+          new BABYLON.Vector3(0, 0, 0)
+        ]
+        myPoint22 = [
+          new BABYLON.Vector3(0, 0, 0),
+          new BABYLON.Vector3(0, 0, 0)
+        ]
+        pathline1.isVisible = false;
+        pathline2.isVisible = false;
       }
       //--------------------------------------------------得分-----------------------------------------------------------------
       if (spheres.length == 15) {
@@ -939,7 +884,6 @@ function createWorld() {
           sphere.num = Math.abs(spheres[i].physicsImpostor.getLinearVelocity().x) < 0.01 &&
             spheres[i].physicsImpostor.getLinearVelocity().z < 0.01 ?
             1 : 0;
-
         }
       }
       if (sphere.num == 1) {
@@ -1066,7 +1010,6 @@ function createWorld() {
 
     return holeXZ;
   }
-
   function Win7(spheres) {
     let win7 = 0;
     for (let i = 0; i < 7; i++) {
@@ -1148,9 +1091,16 @@ function createWorld() {
     }
     return mesh;
   }
-  let lineGoto = (sphere, box, scene, tableLeft) => {
+  let lineGoto = (sphere, box, scene, tableLeft, myPoint11) => {
     let direction = box.position.subtract(sphere.position);
     let ray = new BABYLON.Ray(box.absolutePosition, direction, 20);
+    let hit = scene.multiPickWithRay(ray);
+    for (let i = 0; i < hit.length; i++) {
+      if (hit[i].pickedMesh != sphere && hit[i].pickedMesh != box) {
+        myPoint11[1] = hit[i].pickedPoint;
+      }
+    }
+    myPoint11[0] = sphere.position;
     return ray;
   };
   let linetwice = (sphere, box, rayPoint) => {
@@ -1174,7 +1124,7 @@ function createWorld() {
     return ray2;
   }
 
-  let lineComes = (sphereXu, sphereTarget, sphere) => {
+  let lineComes = (sphereXu, sphereTarget, sphere, linepath2, myPoint22) => {
     let newDirection = new BABYLON.Vector3(0, 0, 10);
     let direction = BABYLON.Vector3.Normalize(
       sphereTarget.position.subtract(sphereXu.position)
@@ -1187,8 +1137,7 @@ function createWorld() {
     );
     let k = directionT.z / directionT.x;
     let d = (k * mouseDirection.x - mouseDirection.z) / (k ** 2 + 1) ** 0.5;
-    /*let m = (mouseDirection.x ** 2+ mouseDirection.z ** 2) ** 0.5;
-        let n = (directionXuT.x ** 2 + directionXuT.z ** 2) ** 0.5; */
+
     if (directionT.x > 0 && directionT.z > 0) {
       let m = d > 0 ? 1 : -1;
       newDirection = new BABYLON.Vector3(direction.z, 0, -direction.x).scale(m);
@@ -1210,7 +1159,11 @@ function createWorld() {
       newDirection = new BABYLON.Vector3(direction.z, 0, -direction.x).scale(m);
     }
     let ray = new BABYLON.Ray(sphereXu.absolutePosition, newDirection, 5);
+    myPoint22[0] = sphereXu.position;
+    myPoint22[1] = sphereXu.position.add(newDirection);
+    linepath2 = BABYLON.MeshBuilder.CreateLines('line22', { points: myPoint22, updatable: true, instance: linepath2 })
     return ray;
+
   };
   let lineCome = (sphere, box) => {
     let result = scene.pick(scene.pointerX, scene.pointerY);
